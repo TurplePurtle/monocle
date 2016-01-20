@@ -46,11 +46,19 @@ defmodule Monocle.MaybeTest do
     end
   end
 
-  test "map of just value is f(value)" do
+  test "map of just value is just f(value)" do
     assert Maybe.map(Maybe.just(1), &(&1 + 1)) == Maybe.just(2)
   end
 
   test "map of nothing is nothing" do
     assert Maybe.map(Maybe.nothing(), &(&1 + 1)) == Maybe.nothing()
+  end
+
+  test "chain of just value and f: m a -> m b is m b" do
+    assert Maybe.chain(Maybe.just(1), &Maybe.just(&1 + 1)) == Maybe.just(2)
+  end
+
+  test "chain of nothing and f is nothing" do
+    assert Maybe.chain(Maybe.nothing(), &Maybe.just(&1 + 1)) == Maybe.nothing()
   end
 end

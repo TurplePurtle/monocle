@@ -26,4 +26,7 @@ defmodule Monocle.Maybe do
 
   def map({:just, val}, f), do: just(f.(val))
   def map(:nothing, _), do: nothing()
+
+  def chain({:just, val}, f), do: f.(val)
+  def chain(:nothing, _), do: :nothing
 end
