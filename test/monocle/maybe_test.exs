@@ -20,19 +20,13 @@ defmodule Monocle.MaybeTest do
     assert Maybe.is_nothing(Maybe.from_nil(nil))
   end
 
-  test "get/1 of something is value" do
+  test "get of just value is value" do
     assert Maybe.get(Maybe.just(1)) == 1
-  end
-
-  test "get/1 of nothing is nil" do
-    assert Maybe.get(Maybe.nothing()) == nil
-  end
-
-  test "get/2 of something is value" do
     assert Maybe.get(Maybe.just(1), 2) == 1
   end
 
-  test "get/2 of nothing is alternative value" do
+  test "get/1 of nothing is nil or default value" do
+    assert Maybe.get(Maybe.nothing()) == nil
     assert Maybe.get(Maybe.nothing(), 1) == 1
   end
 
@@ -52,6 +46,16 @@ defmodule Monocle.MaybeTest do
 
   test "map of nothing is nothing" do
     assert Maybe.map(Maybe.nothing(), &(&1 + 1)) == Maybe.nothing()
+  end
+
+  test "map_nil of nil is nil" do
+    assert Maybe.map_nil(nil, &(&1 + 1)) == nil
+    assert Maybe.map_nil(nil, &(&1 + 1), 5) == 5
+  end
+
+  test "map_nil of value is f(value)" do
+    assert Maybe.map_nil(1, &(&1 + 1)) == 2
+    assert Maybe.map_nil(1, &(&1 + 1), 5) == 2
   end
 
   test "chain of just value and f: m a -> m b is m b" do
