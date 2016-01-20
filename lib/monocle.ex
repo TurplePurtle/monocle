@@ -1,0 +1,2 @@
+defmodule Monocle do
+end
